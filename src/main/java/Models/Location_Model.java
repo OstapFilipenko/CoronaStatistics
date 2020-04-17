@@ -3,11 +3,11 @@ package Models;
 public class Location_Model {
     private String countryName;
     private String provinceName;
-    private double lat;
-    private double lon;
+    private String lat;
+    private String lon;
     private String lid;
 
-    public Location_Model(String countryName, String provinceName, double lat, double lon) {
+    public Location_Model(String countryName, String provinceName, String lat, String lon) {
         this.countryName = countryName;
         this.provinceName = provinceName;
         this.lat = lat;
@@ -31,19 +31,27 @@ public class Location_Model {
         this.provinceName = provinceName;
     }
 
-    public double getLat() {
+    public String getLat() {
         return lat;
     }
 
-    public void setLat(double lat) {
+    public void setLat(String lat) {
         this.lat = lat;
     }
 
-    public double getLon() {
+    public String getLon() {
         return lon;
     }
 
-    public void setLon(double lon) {
+    public void setLon(String lon) {
         this.lon = lon;
+    }
+
+    public String getLid() {
+        return lid;
+    }
+
+    public void setLid(String lid) {
+        this.lid = lid;
     }
 }
