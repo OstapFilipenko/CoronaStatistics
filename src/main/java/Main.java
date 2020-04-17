@@ -7,5 +7,7 @@ public class Main {
         System.out.println("____________");
         FileParser fl = new FileParser();
         System.out.println("Size of locations List: " + fl.getLoations().size());
+        System.out.println("____________");
+        System.out.println("Days: " + FileParser.getAllDatesBetween("1/22/2020"));
     }
 }
