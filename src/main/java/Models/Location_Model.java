@@ -54,4 +54,9 @@ public class Location_Model {
     public void setLid(String lid) {
         this.lid = lid;
     }
+
+    @Override
+    public String toString() {
+        return "Country: " + this.countryName + "\nProvince: " + this.provinceName + "\nLat: " + this.lat + "\nLong: " + this.lon + "\nID: " + this.lid;
+    }
 }

@@ -1,9 +1,9 @@
 import Models.Location_Model;
+import Models.Record_Model;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -14,6 +14,8 @@ public class FileParser {
     // List of all coutries and their locations
     private List<Location_Model> loations = new ArrayList<>();
 
+    // List of all records
+    private List<Record_Model> record_models = new ArrayList<>();
 
     public List<Location_Model> getLoations() {
         try{
@@ -34,7 +36,9 @@ public class FileParser {
         }catch (Exception e){
             e.printStackTrace();
         }
-
         return this.loations;
     }
+
+
+
 }
