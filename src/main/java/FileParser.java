@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FileParser {
@@ -60,7 +61,20 @@ public class FileParser {
         LocalDate st = LocalDate.of(Integer.parseInt(dateSplited[2]), Integer.parseInt(dateSplited[0]), Integer.parseInt(dateSplited[1]));
         LocalDate end = LocalDate.now().minusDays(1);
         while (!st.isAfter(end)) {
-            allDatesString.add(st.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
+            String dateFalseFormated = st.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT));
+            String[] dataFalseSplited = dateFalseFormated.split("\\.");
+            String month = dataFalseSplited[1];
+            if(month.substring(0,1).equals("0")) {
+                month = month.replace("0", "");
+            }
+            String day = dataFalseSplited[0];
+            if(day.substring(0,1).equals("0")){
+                day = day.replace("0", "");
+            }
+            dataFalseSplited[1] = day;
+            dataFalseSplited[0] = month;
+            String correctDate = String.join("/", dataFalseSplited);
+            allDatesString.add(correctDate);
             st = st.plusDays(1);
         }
         return allDatesString;
