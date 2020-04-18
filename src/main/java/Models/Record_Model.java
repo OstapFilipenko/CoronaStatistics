@@ -5,9 +5,11 @@ public class Record_Model {
     private String dateAsString;
     private int ill;
     private String foreignKey;
+    private static int idCounter = 0;
 
-    public Record_Model(int rid, String dateAsString, String countryRegion, int ill, String provinceState) {
-        this.rid = rid;
+    public Record_Model(String dateAsString, String countryRegion, int ill, String provinceState) {
+        idCounter += 1;
+        this.rid = idCounter;
         this.dateAsString = dateAsString;
         this.ill = ill;
         this.foreignKey = countryRegion+provinceState;

@@ -46,8 +46,22 @@ public class FileParser {
     public List<Record_Model> getRecord_models() {
         try {
             Reader reader = Files.newBufferedReader(Paths.get("./src/main/resources/CSV-Files/time_series_covid19_confirmed_global.csv"));
+            CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT
+                    .withFirstRecordAsHeader()
+                    .withIgnoreHeaderCase()
+                    .withTrim());
 
-        }catch (Exception e){
+            for (CSVRecord csvRecord: csvParser) {
+                for (String d: getAllDatesBetween("1/22/2020")) {
+                    String date = d;
+                    String countryRegion = csvRecord.get("Country/Region");
+                    String provinceState = csvRecord.get("Province/State");
+                    int ill = Integer.parseInt(csvRecord.get(d));
+
+                    record_models.add(new Record_Model(date, countryRegion, ill, provinceState));
+                }
+            }
+            }catch (Exception e){
             e.printStackTrace();
         }
         return record_models;
