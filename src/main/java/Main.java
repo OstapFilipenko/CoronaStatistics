@@ -1,3 +1,7 @@
+import DB.DBConnection;
+
+import java.io.IOException;
+
 public class Main {
     public static void main(String[] args){
         boolean state = FileDownload.download("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv",
@@ -11,5 +15,10 @@ public class Main {
         System.out.println("Days: " + FileParser.getAllDatesBetween("1/22/2020"));
         System.out.println("____________");
         System.out.println("Size of records List: " + fl.getRecord_models().size());
+
+        PropertiesLoader propertiesLoader = new PropertiesLoader("./src/main/resources/config.properties");
+        System.out.println("URL: " + propertiesLoader.getUrl());
+        DBConnection dbConnection = new DBConnection(propertiesLoader.getUrl(), propertiesLoader.getUser(), propertiesLoader.getPass());
+        System.out.println("Conn: " + dbConnection.getConnectio());
     }
 }
