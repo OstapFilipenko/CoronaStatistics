@@ -1,18 +1,15 @@
 package Models;
 
 public class Record_Model {
-    private int rid;
     private String dateAsString;
     private int ill;
-    private String foreignKey;
-    private static int idCounter = 0;
+    private int locationID;
 
-    public Record_Model(String dateAsString, String countryRegion, int ill, String provinceState) {
-        idCounter += 1;
-        this.rid = idCounter;
+
+    public Record_Model(String dateAsString, int ill, int locationID) {
         this.dateAsString = dateAsString;
         this.ill = ill;
-        this.foreignKey = countryRegion+provinceState;
+        this.locationID = locationID;
     }
 
     public int getIll() {
@@ -23,14 +20,6 @@ public class Record_Model {
         this.ill = ill;
     }
 
-    public int getRid() {
-        return rid;
-    }
-
-    public void setRid(int rid) {
-        this.rid = rid;
-    }
-
     public String getDateAsString() {
         return dateAsString;
     }
@@ -39,17 +28,17 @@ public class Record_Model {
         this.dateAsString = dateAsString;
     }
 
-    public String getForeignKey() {
-        return foreignKey;
+    public int getLocationID() {
+        return locationID;
     }
 
-    public void setForeignKey(String foreignKey) {
-        this.foreignKey = foreignKey;
+    public void setLocationID(int locationID) {
+        this.locationID = locationID;
     }
 
 
     @Override
     public String toString() {
-        return "ID: " + this.rid + "\nForeignKey: " + this.foreignKey + "\nDate: " + this.dateAsString + "\nIll People: " + this.ill;
+        return "ForeignKey: " + this.locationID + "\nDate: " + this.dateAsString + "\nIll People: " + this.ill;
     }
 }

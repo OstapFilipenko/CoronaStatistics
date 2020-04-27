@@ -23,7 +23,7 @@ public class FileParser {
 
     public FileParser() {
         fillLocationList();
-        fillrecordsList();
+        fillRecordsList();
     }
 
     public List<Location_Model> getLoations() {
@@ -61,7 +61,7 @@ public class FileParser {
         return allDatesString;
     }
 
-    public void fillrecordsList(){
+    public void fillRecordsList(){
         try {
             Reader reader = Files.newBufferedReader(Paths.get("./src/main/resources/CSV-Files/time_series_covid19_confirmed_global.csv"));
             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT
@@ -75,8 +75,15 @@ public class FileParser {
                     String countryRegion = csvRecord.get("Country/Region");
                     String provinceState = csvRecord.get("Province/State");
                     int ill = Integer.parseInt(csvRecord.get(d));
+                    int locationID = 0;
+                    for (Location_Model l: this.loations) {
+                        if(l.getCountryName().equals(countryRegion) && l.getProvinceName().equals(provinceState)){
+                            locationID = l.getLocationID();
+                        }
+                    }
 
-                    record_models.add(new Record_Model(date, countryRegion, ill, provinceState));
+
+                    record_models.add(new Record_Model(date, ill, locationID));
                 }
             }
         }catch (Exception e){
