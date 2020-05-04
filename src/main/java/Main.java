@@ -18,6 +18,8 @@ public class Main {
 
         PropertiesLoader propertiesLoader = new PropertiesLoader("./src/main/resources/config.properties");
         System.out.println("URL: " + propertiesLoader.getUrl());
+        System.out.println("USER: " + propertiesLoader.getUser());
+        System.out.println("Pass: " + propertiesLoader.getPass());
         DBConnection dbConnection = new DBConnection(propertiesLoader.getUrl(), propertiesLoader.getUser(), propertiesLoader.getPass());
         System.out.println("Conn: " + dbConnection.getConnectio());
     }
