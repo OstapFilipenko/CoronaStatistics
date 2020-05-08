@@ -1,10 +1,9 @@
 package DB;
 
 import Models.Location_Model;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CRUD_Operations {
@@ -27,9 +26,19 @@ public class CRUD_Operations {
         this.dbConn = conn;
     }
 
-    public List<Location_Model> locationToAdd(List<Location_Model> all){
+    public List<Location_Model> locationToAdd(List<Location_Model> all, ResultSet rs) throws SQLException {
+        List<Location_Model> inBoth = new ArrayList<>();
+        for (Location_Model l: all){
+            while (rs.next()){
+                if(l.getCountryName().equals(rs.getString("Country")) && l.getProvinceName().equals(rs.getString("Province"))){
+                    inBoth.add(l);
+                }
+            }
+        }
 
-        return null;
+        all.removeAll(inBoth);
+
+        return all;
     }
 
 
@@ -44,18 +53,21 @@ public class CRUD_Operations {
         }
     }
 
-    public boolean insert(){
+    public boolean insert(List<Location_Model> locations){
         try{
-            PreparedStatement prepStmt = null;
-            String query = "INSERT INTO Location (LocationID, Lat, Longtitude, Country, Province)  " +
-                    "VALUES(?,?,?,?,?);";
-            prepStmt = dbConn.prepareStatement(query);
-            prepStmt.setInt(1,4);
-            prepStmt.setString(2, "234.32423");
-            prepStmt.setString(3, "432.34234");
-            prepStmt.setString(4, "Germany");
-            prepStmt.setString(5, "");
-            prepStmt.executeUpdate();
+            for (Location_Model l: locations) {
+                PreparedStatement prepStmt = null;
+                String query = "INSERT INTO Location (LocationID, Lat, Longtitude, Country, Province)  " +
+                        "VALUES(?,?,?,?,?);";
+                prepStmt = dbConn.prepareStatement(query);
+                prepStmt.setInt(1,l.getLocationID());
+                prepStmt.setString(2, l.getLat());
+                prepStmt.setString(3, l.getLon());
+                prepStmt.setString(4, l.getCountryName());
+                prepStmt.setString(5, l.getProvinceName());
+                prepStmt.executeUpdate();
+            }
+
             return true;
         }catch (Exception e){
             e.printStackTrace();
