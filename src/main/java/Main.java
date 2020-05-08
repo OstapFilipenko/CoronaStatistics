@@ -1,3 +1,4 @@
+import DB.CRUD_Operations;
 import DB.DBConnection;
 
 import java.io.IOException;
@@ -22,5 +23,12 @@ public class Main {
         System.out.println("Pass: " + propertiesLoader.getPass());
         DBConnection dbConnection = new DBConnection(propertiesLoader.getUrl(), propertiesLoader.getUser(), propertiesLoader.getPass());
         System.out.println("Conn: " + dbConnection.getConnectio());
+
+
+        CRUD_Operations crud_operations = new CRUD_Operations(dbConnection.getConnectio());
+        System.out.println("_______________________________");
+        System.out.println("The state of Statement: " + crud_operations.insert());
+        System.out.println("The state of Select: " + crud_operations.selectAll());
+        crud_operations.closeConn();
     }
 }
