@@ -1,3 +1,6 @@
+import DB.CRUD_Locations;
+import DB.CRUD_Records;
+import DB.DBConnection;
 import JavaFx_Elements.ChartScene;
 import Models.Location_Model;
 import Models.Record_Model;
@@ -7,9 +10,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -51,7 +51,7 @@ public class Main extends Application{
 
 
 
-        /*
+
         PropertiesLoader propertiesLoader = new PropertiesLoader("./src/main/resources/config.properties");
         System.out.println("URL: " + propertiesLoader.getUrl());
         System.out.println("USER: " + propertiesLoader.getUser());
@@ -73,7 +73,7 @@ public class Main extends Application{
         List<Record_Model> selectedListRecs = crud_records.selectAll();
         System.out.println("Size of selected List(Records): " + selectedListRecs.size());
         crud_records.closeConn();
-         */
+
     }
 
     @Override
