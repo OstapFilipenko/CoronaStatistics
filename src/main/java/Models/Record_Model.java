@@ -2,19 +2,19 @@ package Models;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Record_Model {
-    private Date date;
+    private String date;
     private int ill;
     private String country;
     private String province;
 
-    final SimpleDateFormat format = new SimpleDateFormat("M/dd/YY");
 
-
-    public Record_Model(String dateAsString, int ill, String country, String province) throws ParseException {
-        this.date = format.parse(dateAsString);
+    public Record_Model(String date, int ill, String country, String province){
+        this.date = date;
         this.ill = ill;
         this.country = country;
         this.province = province;
@@ -28,12 +28,12 @@ public class Record_Model {
         this.ill = ill;
     }
 
-    public Date getDateAsString() {
+    public String getDate() {
         return date;
     }
 
-    public void setDateAsString(String dateAsString) throws ParseException {
-        this.date = format.parse(dateAsString);
+    public void setDateAsString(String date)  {
+        this.date = date;
     }
     public String getCountry() {
         return country;
@@ -53,6 +53,6 @@ public class Record_Model {
 
     @Override
     public String toString() {
-        return "Country: " + this.country + "\nDate: " + this.date.toString() + "\nIll People: " + this.ill + "\nProvince: " + this.province;
+        return "Country: " + this.country + "\nDate: " + this.date + "\nIll People: " + this.ill + "\nProvince: " + this.province;
     }
 }
