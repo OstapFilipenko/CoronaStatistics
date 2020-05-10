@@ -2,6 +2,7 @@ package DB;
 
 import Models.Location_Model;
 
+import javax.print.attribute.standard.PresentationDirection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,27 +27,34 @@ public class CRUD_Operations {
         this.dbConn = conn;
     }
 
-    public List<Location_Model> locationToAdd(List<Location_Model> all, ResultSet rs) throws SQLException {
-        List<Location_Model> inBoth = new ArrayList<>();
-        for (Location_Model l: all){
-            while (rs.next()){
-                if(l.getCountryName().equals(rs.getString("Country")) && l.getProvinceName().equals(rs.getString("Province"))){
-                    inBoth.add(l);
-                }
-            }
+
+    public Location_Model selectOneLocation(String country, String province){
+        try{
+            PreparedStatement ps = dbConn.prepareStatement("SELECT * FROM Locations WHERE Country=? AND Province=?");
+            ps.setString(1, country);
+            ps.setString(2, province);
+            ResultSet rs = ps.executeQuery();
+            return new Location_Model(rs.getString("Country"), rs.getString("Province"), rs.getString("Lat"), rs.getString("Longtitude"));
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
         }
-
-        all.removeAll(inBoth);
-
-        return all;
     }
 
-
-    public ResultSet selectAll(){
+    public List<Location_Model> selectLocations(){
+        List<Location_Model> locations = new ArrayList<>();
         try{
             Statement stmt = dbConn.createStatement();
-            String query = "SELECT * FROM Location;";
-            return stmt.executeQuery(query);
+            String query = "SELECT * FROM Locations;";
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()){
+                String lat = rs.getString("Lat");
+                String longtitude = rs.getString("Longtitude");
+                String country = rs.getString("Country");
+                String province = rs.getString("Province");
+                locations.add(new Location_Model(country, province, lat, longtitude));
+            }
+            return locations;
         }catch (Exception e){
             e.printStackTrace();
             return null;
@@ -55,22 +63,69 @@ public class CRUD_Operations {
 
     public boolean insert(List<Location_Model> locations){
         try{
-            for (Location_Model l: locations) {
-                PreparedStatement prepStmt = null;
-                String query = "INSERT INTO Location (LocationID, Lat, Longtitude, Country, Province)  " +
-                        "VALUES(?,?,?,?,?);";
-                prepStmt = dbConn.prepareStatement(query);
-                prepStmt.setInt(1,l.getLocationID());
-                prepStmt.setString(2, l.getLat());
-                prepStmt.setString(3, l.getLon());
-                prepStmt.setString(4, l.getCountryName());
-                prepStmt.setString(5, l.getProvinceName());
-                prepStmt.executeUpdate();
+            boolean stateOfDelete = deleteAllLocations();
+            if(stateOfDelete){
+                for (Location_Model l: locations) {
+                    PreparedStatement prepStmt = null;
+                    String query = "INSERT INTO Locations (Lat, Longtitude, Country, Province)  " +
+                            "VALUES(?,?,?,?);";
+                    prepStmt = dbConn.prepareStatement(query);
+                    prepStmt.setString(1, l.getLat());
+                    prepStmt.setString(2, l.getLon());
+                    prepStmt.setString(3, l.getCountryName());
+                    prepStmt.setString(4, l.getProvinceName());
+                    prepStmt.executeUpdate();
+                }
+                return true;
+            }else {
+                return false;
             }
 
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteAllLocations(){
+        try{
+            String query = "DELETE FROM Locations;";
+            PreparedStatement stmt = dbConn.prepareStatement(query);
+            stmt.executeUpdate();
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteLocation(Location_Model lc){
+        try{
+            PreparedStatement ps = dbConn.prepareStatement("DELETE FROM Locations WHERE Country=? AND PROVINCE=?;");
+            ps.setString(1, lc.getCountryName());
+            ps.setString(2, lc.getProvinceName());
+            ps.executeUpdate();
             return true;
         }catch (Exception e){
             e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean updateLocation(Location_Model lc, String country, String province, String lat, String longtitude){
+        try{
+            PreparedStatement ps = dbConn.prepareStatement("UPDATE Locations SET Country=?, Province=?, Lat=?, Longtitude=?" +
+                    " WHERE Country=? AND Province=?");
+            ps.setString(1, country);
+            ps.setString(2, province);
+            ps.setString(3,lat);
+            ps.setString(4,longtitude);
+            ps.setString(5,lc.getCountryName());
+            ps.setString(6,lc.getProvinceName());
+            ps.executeUpdate();
+            return true;
+        }catch (Exception e){
             return false;
         }
     }

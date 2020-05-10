@@ -17,9 +17,9 @@ public class Main {
         FileParser fl = new FileParser();
         System.out.println("Size of locations List: " + fl.getLoations().size());
         System.out.println("____________");
-        System.out.println("Days: " + FileParser.getAllDatesBetween("1/22/2020"));
-        System.out.println("____________");
-        System.out.println("Size of records List: " + fl.getRecord_models().size());
+        //System.out.println("Days: " + FileParser.getAllDatesBetween("1/22/2020"));
+        //System.out.println("____________");
+        //System.out.println("Size of records List: " + fl.getRecord_models().size());
         //System.out.println("_____________________");
         //System.out.println("first Location: " + fl.getLoations().get(1));
 
@@ -33,8 +33,9 @@ public class Main {
 
         CRUD_Operations crud_operations = new CRUD_Operations(dbConnection.getConnectio());
         System.out.println("_______________________________");
-        List<Location_Model> allToAdd = crud_operations.locationToAdd(fl.getLoations(), crud_operations.selectAll());
-        System.out.println("The state of Statement: " + crud_operations.insert(allToAdd));
+        System.out.println("The state of Statement: " + crud_operations.insert(fl.getLoations()));
+        List<Location_Model> selectedList = crud_operations.selectLocations();
+        System.out.println("Size of selected List: " + selectedList.size());
         crud_operations.closeConn();
 
     }

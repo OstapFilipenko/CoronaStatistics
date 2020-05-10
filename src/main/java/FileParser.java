@@ -23,17 +23,18 @@ public class FileParser {
 
     public FileParser() {
         fillLocationList();
-        fillRecordsList();
+        //fillRecordsList();
     }
 
     public List<Location_Model> getLoations() {
         return this.loations;
     }
 
+    /*
     public List<Record_Model> getRecord_models() {
         return this.record_models;
     }
-
+*/
     public static List<String> getAllDatesBetween(String startDate) {
         List<String> allDatesString = new ArrayList<>();
 
@@ -60,7 +61,7 @@ public class FileParser {
         }
         return allDatesString;
     }
-
+/*
     public void fillRecordsList(){
         try {
             Reader reader = Files.newBufferedReader(Paths.get("./src/main/resources/CSV-Files/time_series_covid19_confirmed_global.csv"));
@@ -90,7 +91,7 @@ public class FileParser {
             e.printStackTrace();
         }
     }
-
+*/
     public void fillLocationList(){
         try{
             Reader reader = Files.newBufferedReader(Paths.get("./src/main/resources/CSV-Files/time_series_covid19_confirmed_global.csv"));
@@ -102,9 +103,8 @@ public class FileParser {
             for (CSVRecord csvRecord: csvParser) {
                 String provinceState = csvRecord.get("Province/State");
                 String countryRegion = csvRecord.get("Country/Region");
-                String lat = csvRecord.get("Lat");
+                String lat =  csvRecord.get("Lat");
                 String longtitude = csvRecord.get("Long");
-
                 loations.add(new Location_Model(countryRegion, provinceState, lat, longtitude));
             }
         }catch (Exception e){

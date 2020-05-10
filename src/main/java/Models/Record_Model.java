@@ -1,15 +1,23 @@
 package Models;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Record_Model {
-    private String dateAsString;
+    private Date date;
     private int ill;
-    private int locationID;
+    private String country;
+    private String province;
+
+    final SimpleDateFormat format = new SimpleDateFormat("M/dd/YY");
 
 
-    public Record_Model(String dateAsString, int ill, int locationID) {
-        this.dateAsString = dateAsString;
+    public Record_Model(String dateAsString, int ill, String country, String province) throws ParseException {
+        this.date = format.parse(dateAsString);
         this.ill = ill;
-        this.locationID = locationID;
+        this.country = country;
+        this.province = province;
     }
 
     public int getIll() {
@@ -20,25 +28,31 @@ public class Record_Model {
         this.ill = ill;
     }
 
-    public String getDateAsString() {
-        return dateAsString;
+    public Date getDateAsString() {
+        return date;
     }
 
-    public void setDateAsString(String dateAsString) {
-        this.dateAsString = dateAsString;
+    public void setDateAsString(String dateAsString) throws ParseException {
+        this.date = format.parse(dateAsString);
+    }
+    public String getCountry() {
+        return country;
     }
 
-    public int getLocationID() {
-        return locationID;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public void setLocationID(int locationID) {
-        this.locationID = locationID;
+    public String getProvince() {
+        return province;
     }
 
+    public void setProvince(String province) {
+        this.province = province;
+    }
 
     @Override
     public String toString() {
-        return "ForeignKey: " + this.locationID + "\nDate: " + this.dateAsString + "\nIll People: " + this.ill;
+        return "Country: " + this.country + "\nDate: " + this.date.toString() + "\nIll People: " + this.ill + "\nProvince: " + this.province;
     }
 }
