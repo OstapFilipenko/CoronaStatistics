@@ -13,6 +13,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class Main extends Application{
@@ -24,7 +25,11 @@ public class Main extends Application{
         Thread t2 = new Thread(){
             @Override
             public void run() {
-                db_proceses();
+                try {
+                    db_proceses();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         };
         t2.start();
@@ -33,7 +38,7 @@ public class Main extends Application{
 
     }
 
-    public static void db_proceses(){
+    public static void db_proceses() throws SQLException {
         boolean state = FileDownload.download("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv",
                 "./src/main/resources/CSV-Files");
         System.out.println("State of downloading the csv file: " + state);
@@ -56,23 +61,22 @@ public class Main extends Application{
         System.out.println("URL: " + propertiesLoader.getUrl());
         System.out.println("USER: " + propertiesLoader.getUser());
         System.out.println("Pass: " + propertiesLoader.getPass());
-        DBConnection dbConnection = new DBConnection(propertiesLoader.getUrl(), propertiesLoader.getUser(), propertiesLoader.getPass());
-        System.out.println("Conn: " + dbConnection.getConnectio());
+        DBConnection dbConnection = new DBConnection();
+        System.out.println("Conn: " + dbConnection.getConnection());
 
 
-        CRUD_Locations crud_locations = new CRUD_Locations(dbConnection.getConnectio());
+        CRUD_Locations crud_locations = new CRUD_Locations(dbConnection.getConnection());
         System.out.println("_______________________________");
         System.out.println("The state of Statement(Location): " + crud_locations.insertAll(locations));
         List<Location_Model> selectedListLocs = crud_locations.selectAll();
         System.out.println("Size of selected List(Location): " + selectedListLocs.size());
-        crud_locations.closeConn();
 
-        CRUD_Records crud_records = new CRUD_Records(dbConnection.getConnectio());
+
+        CRUD_Records crud_records = new CRUD_Records(dbConnection.getConnection());
         System.out.println("_______________________________");
         System.out.println("The state of Statement(Records): " + crud_records.insertAll(records));
         List<Record_Model> selectedListRecs = crud_records.selectAll();
         System.out.println("Size of selected List(Records): " + selectedListRecs.size());
-        crud_records.closeConn();
 
     }
 
